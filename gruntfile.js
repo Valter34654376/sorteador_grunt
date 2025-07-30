@@ -1,4 +1,4 @@
-const { option } = require('grunt');
+const { option, file } = require('grunt');
 
 module.exports = function(grunt){
     grunt.initConfig({
@@ -59,6 +59,10 @@ module.exports = function(grunt){
                         {
                             match: 'ENDERECO_DO_CSS',
                             replacement: './styles/main.min.css'
+                        },
+                               {
+                            match: 'ENDERECO_DO_JS',
+                            replacement: '.scripts/main.min.js'
                         }
                     ]
                 },
@@ -83,7 +87,14 @@ module.exports = function(grunt){
                 }
             }
         },
-        clean:['prebuild']
+        clean:['prebuild'],
+        uglify: {
+            target:{
+                filis:{
+                    'dist/scripts/main.min.js': 'src/scripts/main.js'
+                }
+            }
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-less'); 
@@ -91,8 +102,9 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-replace');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
 
     grunt.registerTask('default', ['watch']);
-    grunt.registerTask('build', ['less:production','htmlmin:dist','replace:dist', 'clean']);
+    grunt.registerTask('build', ['less:production','htmlmin:dist','replace:dist', 'clean','uglify']);
 }
